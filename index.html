@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pl">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Counter</title>
+		<link rel="stylesheet" href="style.css" />
+		<link rel="icon" type="image/x-icon" href="./logo.png" />
+		<script
+			src="https://unpkg.com/react@18/umd/react.development.js"
+			crossorigin
+		></script>
+		<script
+			src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+			crossorigin
+		></script>
+		<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+	</head>
+	<body>
+		<div id="container"></div>
+
+		<script type="text/babel">
+			const e = React.createElement;
+
+			class Counter extends React.Component {
+				render() {
+					return <div className='counter'>{this.props.display}</div>;
+				}
+			}
+
+			class LogArea extends React.Component {
+				render() {
+					return (
+						<textarea
+							className='log-area'
+							value={this.props.log}
+							readOnly
+							placeholder='Autor: Filip Świątek'
+						/>
+					);
+				}
+			}
+
+			class CounterParent extends React.Component {
+				constructor(props) {
+					super(props);
+
+					this.state = {
+						count: parseInt(localStorage.getItem("count") || 0),
+						log: localStorage.getItem("log") || "",
+					};
+					this.increase = this.increase.bind(this);
+					this.decrease = this.decrease.bind(this);
+					this.reset = this.reset.bind(this);
+					this.logAction = this.logAction.bind(this);
+					this.addInfoToLog = this.addInfoToLog.bind(this);
+				}
+
+				increase(e) {
+					if (e.type === "click" && e.button === 2) {
+						e.preventDefault();
+					}
+					let increment = e.shiftKey ? 10 : 1;
+					if (e.type === "auxclick" && e.button === 1) {
+						increment = e.shiftKey ? -5 : 5;
+					}
+					if (e.button !== 2) {
+						const newCount = this.state.count + increment;
+						this.setState({ count: newCount }, () => {
+							localStorage.setItem("count", newCount);
+							this.logAction(`Increased by ${increment}`);
+						});
+					}
+				}
+
+				decrease(e) {
+					e.preventDefault();
+					if (e.type === "contextmenu") {
+						let decrement = e.shiftKey ? 10 : 1;
+						const newCount = this.state.count - decrement;
+						this.setState({ count: newCount }, () => {
+							localStorage.setItem("count", newCount);
+							this.logAction(`Decreased by -${decrement}`);
+						});
+					}
+				}
+
+				reset(e) {
+					const newCount = 0;
+					this.setState({ count: newCount }, () => {
+						localStorage.setItem("count", newCount);
+						this.logAction("Counter Reset");
+						if (e.shiftKey) {
+							this.setState({ log: "" });
+							localStorage.removeItem("log");
+						}
+					});
+				}
+
+				logAction(action) {
+					const newLog = `${this.state.log}\n${action}`;
+					this.setState({ log: newLog.trim() });
+					localStorage.setItem("log", newLog.trim());
+				}
+
+				addInfoToLog() {
+					const info =
+						"================================\nAuthor: Filip Świątek\nLPM = +1\nLPM + shift = +10<\nPPM = -1\nPPM + shift = -10\nScroll = +5\nScroll + shift = -5\nreset button = reset counter\nreset button + shift = reset log area\n================================";
+					this.logAction(info);
+				}
+
+				render() {
+					return (
+						<div id='container'>
+							<div className='counter-block'>
+								<Counter display={this.state.count} />
+								<button
+									onClick={this.increase}
+									onContextMenu={this.decrease}
+									onAuxClick={this.increase}
+								>
+									+
+								</button>
+								<button onClick={this.reset}>reset</button>
+								<button onClick={this.addInfoToLog}>information</button>
+							</div>
+							<LogArea log={this.state.log} />
+						</div>
+					);
+				}
+			}
+
+			const domContainer = document.querySelector("#container");
+			const root = ReactDOM.createRoot(domContainer);
+			root.render(e(CounterParent));
+		</script>
+	</body>
+</html>
