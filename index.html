@@ -105,7 +105,7 @@
 
 				addInfoToLog() {
 					const info =
-						"================================\nAuthor: Filip Świątek\nLPM = +1\nLPM + shift = +10<\nPPM = -1\nPPM + shift = -10\nScroll = +5\nScroll + shift = -5\nreset button = reset counter\nreset button + shift = reset log area\n================================";
+						"================================\nAuthor: Filip Świątek\nLPM = +1\nLPM + shift = +10<\nPPM = -1\nPPM + shift = -10\nScroll = +5\nScroll + shift = -5\nReset Button = Reset Counter\nReset Button + Shift = Reset Log Area\n================================";
 					this.logAction(info);
 				}
 
@@ -121,8 +121,8 @@
 								>
 									+
 								</button>
-								<button onClick={this.reset}>reset</button>
-								<button onClick={this.addInfoToLog}>information</button>
+								<button onClick={this.reset}>Reset</button>
+								<button onClick={this.addInfoToLog}>Information</button>
 							</div>
 							<LogArea log={this.state.log} />
 						</div>
