@@ -26,5 +26,5 @@ This project is a responsive web application built using React that implements a
 Feel free to use this project as a starting point for your web applications. Customize the components, styling, and functionality to fit your needs. Add more components or features as your projects evolve.
 
 ## 👨‍💻 Created by
-- [YoFilip]((https://github.com/YoFilip))
+- [YoFilip](https://github.com/YoFilip)
 
